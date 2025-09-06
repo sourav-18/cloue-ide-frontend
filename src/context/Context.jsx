@@ -5,8 +5,10 @@ const allState=createContext();
 function Context({children}){
     const [state,dispatch]=useReducer(Reducer,{
         selectedFile:null,
+        selectedDir:null,
         socket:null,
         initialDirPath:null,
+        fileCreateDirPath:null,
     })
     return(
         <allState.Provider value={{state,dispatch}}>

@@ -36,7 +36,7 @@ function CodeEditor() {
   }
 
   return (
-    <div style={{ flex: 2 }}>
+    <div style={{ flex: 5 }}>
       <Editor
         height="100vh"
         defaultLanguage="javascript"

@@ -7,6 +7,10 @@ export default function Reducer(state,action){
             return{...state,socket:action.payload.socket}
         case constantData.reducerActionType.initialDirPath:
             return{...state,initialDirPath:action.payload.initialDirPath}
+        case constantData.reducerActionType.selectedDir:
+            return{...state,selectedDir:action.payload.selectedDir}
+        case constantData.reducerActionType.fileCreateDirPath:
+            return{...state,fileCreateDirPath:action.payload.fileCreateDirPath}
         default:
             return state;
     }
