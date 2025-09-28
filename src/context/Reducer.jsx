@@ -11,6 +11,8 @@ export default function Reducer(state,action){
             return{...state,selectedDir:action.payload.selectedDir}
         case constantData.reducerActionType.fileCreateDirPath:
             return{...state,fileCreateDirPath:action.payload.fileCreateDirPath}
+        case constantData.reducerActionType.folderCreateDirPath:
+            return{...state,folderCreateDirPath:action.payload.folderCreateDirPath}
         default:
             return state;
     }

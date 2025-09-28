@@ -10,7 +10,9 @@ const socketKeys = {
         loadInitialFile: "dir:load-initial-file",
         fileContent: "file:content",
         dirBaseFile: "dir:base-file",
-        fileContentSync: "file:content-sync"
+        fileContentSync: "file:content-sync",
+        newFileCreate: "file:new-create",
+        newDirCreate: "dir:new-create",
     }
 }
 

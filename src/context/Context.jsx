@@ -9,6 +9,7 @@ function Context({children}){
         socket:null,
         initialDirPath:null,
         fileCreateDirPath:null,
+        folderCreateDirPath:null
     })
     return(
         <allState.Provider value={{state,dispatch}}>
