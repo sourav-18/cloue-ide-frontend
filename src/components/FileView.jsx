@@ -6,24 +6,40 @@ import { AllState } from "../context/Context";
 function FileView({ item, socket }) {
   const { state: { selectedFile, fileCreateDirPath, folderCreateDirPath, selectedDir }, dispatch } = AllState();
   const [files, setFiles] = useState([]);
-
   const [dirOpen, setDirOpen] = useState(false);
 
+  let fileColorStyle = {}
+  if (selectedFile == item.path || selectedDir == item.path) {
+    fileColorStyle = { background: "yellow", color: "black" }
+  }
 
-  function handleFileOpen(e, item) {
-    e.stopPropagation();
+  let style = {
+    file: {
+      cursor: "pointer",
+      display: item.name === "workspaces" ? "none" : "block",
+      ...fileColorStyle
+    }
+  }
+
+  function handleFileOpen({isRootFile,event, item}) {
+    if (event) {
+      event.stopPropagation();
+    }
     //todo loading bar
     if (item.type == "file") {
       dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: null } });
       dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: item.path } });
     } else {
-      dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: null } });
-      dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: item.path } });
+      if(!isRootFile){
+        dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: null } });
+        dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: item.path } });
+      }
       setDirOpen(!dirOpen);
       if (!dirOpen) {
         socket?.emit(socketKey.emit.dirBaseFile, { dirPath: item.path }, (response) => {
           if (response.statusCode === 200 && response.data) {
-            setFiles(response.data?.baseFiles);
+            let responseData = response.data?.baseFiles.sort((item) => item.type == "dir" ? -1 : 1);
+            setFiles(responseData);
           }
         }
         )
@@ -31,6 +47,13 @@ function FileView({ item, socket }) {
     }
     return;
   }
+
+  useEffect(() => {
+    if (item.name === "workspaces") {
+      // style.file.display= "none";
+      handleFileOpen({isRootFile:true,item:item});
+    }
+  }, []);
 
   function handleFileCrate(e) {
     e.stopPropagation();
@@ -59,20 +82,12 @@ function FileView({ item, socket }) {
     }
   }
 
-  let fileColorStyle = {}
-  if (selectedFile == item.path || selectedDir == item.path) {
-    fileColorStyle = { background: "yellow", color: "black" }
-  }
-  const style = {
-    file: {
-      cursor: "pointer",
-      ...fileColorStyle
-    }
-  }
+
+
 
   return (
     <div style={{ marginLeft: 2, padding: 3 }}>
-      <div onClick={(e) => handleFileOpen(e, item)} style={style.file}>
+      <div onClick={(e) => handleFileOpen({event:e, item:item})} style={style.file}>
         {item.type == "file" ? "." : dirOpen ? "↓" : ">"}
         {item.name}
       </div>

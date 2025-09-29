@@ -9,13 +9,7 @@ const App = () => {
   const { dispatch } = AllState();
   useEffect(() => {
     let socket = socketInit();
-    dispatch({ type: constantData.reducerActionType.socketSet, payload: { socket: socket } })
-    socket.on(socketKey.on.initialDirPath, (data) => {
-      if (data.statusCode == 200 && data.data) {
-        dispatch({ type: constantData.reducerActionType.initialDirPath, payload: { initialDirPath: data.data.dirPath } })
-        dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: data.data.filePath } })
-      }
-    })
+    dispatch({ type: constantData.reducerActionType.socketSet, payload: { socket: socket } });
   }, []);
   return <CodeSpace />;
 };

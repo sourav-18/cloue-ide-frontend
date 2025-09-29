@@ -3,31 +3,25 @@ import socketKey from "../utils/socketKey.utils";
 import FileView from "./FileView";
 import { AllState } from "../context/Context";
 import constantData from "../utils/constant.utils";
+import { FolderPlus, FilePlus } from 'lucide-react';
 
 function FileTree() {
   const [files, setFiles] = useState([]);
   const [filCreateSignal, setFileCreateSignal] = useState([]);
-  const { state: { socket, initialDirPath, selectedFile, selectedDir }, dispatch } = AllState();
+  const { state: { socket, selectedDir }, dispatch } = AllState();
   useEffect(() => {
     initSocket();
-  }, [initialDirPath]);
+  }, [socket]);
 
   function initSocket() {
     if (!socket) return;
-    socket.emit(socketKey.emit.dirBaseFile, { dirPath: initialDirPath }, (response) => {
-      if (response.statusCode === 200 && response.data) {
-        console.log(response.data)
-        dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: response.data.dirPath } })
-        setFiles(response.data?.baseFiles);
-        // setFiles([
-        //   {
-        //     name:"workspaces",
-        //     path:"/workspaces",
-        //     type:"dir"
-        //   }
-        // ]);
+    socket.on(socketKey.on.initialDirPath, (data) => {
+      if (data.statusCode == 200 && data.data) {
+        dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: data.data.filePath } });
+        dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: data.data.dirPath } })
+        setFiles([data.data.rootDirData]);
       }
-    });
+    })
   }
 
   const handleFileCreateInitiate = (e) => {
@@ -44,8 +38,8 @@ function FileTree() {
 
   return (
     <div style={{ flex: 1, backgroundColor: "#1D163D", color: "white", height: "100vh", overflowY: "auto", }} onClick={() => console.log("onclick")}>
-      <button onClick={(e) => handleFileCreateInitiate(e)}>file create</button>
-      <button onClick={(e) => handleFolderCreateInitiate(e)}>folder create</button>
+      <FilePlus onClick={(e) => handleFileCreateInitiate(e)} cursor="pointer"/>
+      <FolderPlus onClick={(e) => handleFolderCreateInitiate(e)} cursor="pointer"/>
       {
         files.map((item, index) => {
           return <FileView item={item} key={index} socket={socket} />

@@ -7,7 +7,6 @@ function Context({children}){
         selectedFile:null,
         selectedDir:null,
         socket:null,
-        initialDirPath:null,
         fileCreateDirPath:null,
         folderCreateDirPath:null
     })
