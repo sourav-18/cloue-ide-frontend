@@ -4,7 +4,7 @@ import { socketInit } from "./general/socket.general.js";
 import constantData from "./utils/constant.utils.js";
 import { AllState } from "./context/Context.jsx";
 import socketKey from "./utils/socketKey.utils.js";
-
+import './App.css';
 const App = () => {
   const { dispatch } = AllState();
   useEffect(() => {

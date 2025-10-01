@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import socketKey from "../utils/socketKey.utils";
 import constantData from "../utils/constant.utils";
 import { AllState } from "../context/Context";
+import DirOpenIcon from "./Icons/DirOpenIcon";
+import DirCloseIcon from "./Icons/DirCloseIcon";
+import FileIcon from "./Icons/FileIcon";
+import FileCreate from "./FileCreate";
+import FolderCreate from "./FolderCreate";
 
 function FileView({ item, socket }) {
   const { state: { selectedFile, fileCreateDirPath, folderCreateDirPath, selectedDir }, dispatch } = AllState();
+
   const [files, setFiles] = useState([]);
   const [dirOpen, setDirOpen] = useState(false);
 
@@ -16,12 +22,14 @@ function FileView({ item, socket }) {
   let style = {
     file: {
       cursor: "pointer",
-      display: item.name === "workspaces" ? "none" : "block",
+      display: item.name === "workspaces" ? "none" : "flex",
+      // alignItems: "center",
+      gap:6,
       ...fileColorStyle
     }
   }
 
-  function handleFileOpen({isRootFile,event, item}) {
+  function handleFileOpen({ isRootFile, event, item }) {
     if (event) {
       event.stopPropagation();
     }
@@ -30,7 +38,7 @@ function FileView({ item, socket }) {
       dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: null } });
       dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: item.path } });
     } else {
-      if(!isRootFile){
+      if (!isRootFile) {
         dispatch({ type: constantData.reducerActionType.selectedFile, payload: { selectedFile: null } });
         dispatch({ type: constantData.reducerActionType.selectedDir, payload: { selectedDir: item.path } });
       }
@@ -51,7 +59,7 @@ function FileView({ item, socket }) {
   useEffect(() => {
     if (item.name === "workspaces") {
       // style.file.display= "none";
-      handleFileOpen({isRootFile:true,item:item});
+      handleFileOpen({ isRootFile: true, item: item });
     }
   }, []);
 
@@ -87,16 +95,16 @@ function FileView({ item, socket }) {
 
   return (
     <div style={{ marginLeft: 2, padding: 3 }}>
-      <div onClick={(e) => handleFileOpen({event:e, item:item})} style={style.file}>
-        {item.type == "file" ? "." : dirOpen ? "↓" : ">"}
-        {item.name}
+      <div onClick={(e) => handleFileOpen({ event: e, item: item })} style={style.file}>
+        {item.type == "file" ? <FileIcon /> : dirOpen ? <DirOpenIcon/> : <DirCloseIcon/>}
+        <div>{item.name}</div>
       </div>
       {dirOpen &&
         files?.map((innerItem, innerIndex) => {
           return <FileView item={innerItem} key={innerIndex} socket={socket} />;
         })}
-      {item.path == fileCreateDirPath && <input autoFocus={true} onKeyDown={handleFileCrate}></input>}
-      {item.path == folderCreateDirPath && <input autoFocus={true} onKeyDown={handleFolderCrate}></input>}
+      {item.path==fileCreateDirPath&&<FileCreate handleFileCrate={handleFileCrate}/>}
+      {item.path==folderCreateDirPath&&<FolderCreate handleFolderCrate={handleFolderCrate}/>}
     </div>
   );
 
