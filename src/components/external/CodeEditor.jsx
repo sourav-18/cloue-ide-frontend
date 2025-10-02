@@ -38,7 +38,7 @@ function CodeEditor() {
   return (
     <div style={{ flex: 5 }}>
       <Editor
-        height="100vh"
+        // height="100vh"
         defaultLanguage="javascript"
         theme="vs-dark"
         value={fileContent}

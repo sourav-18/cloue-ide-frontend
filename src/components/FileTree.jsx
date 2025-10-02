@@ -37,7 +37,9 @@ function FileTree() {
   }
 
   return (
-    <div style={{ flex: 1, backgroundColor: "#181818", color: "white", height: "100vh", overflowY: "auto", }} onClick={() => console.log("onclick")}>
+    <div
+    //  style={{ flex: 1, backgroundColor: "#181818", color: "white", height: "100vh", overflowY: "auto", }} 
+    onClick={() => console.log("onclick")}>
       <FilePlus onClick={(e) => handleFileCreateInitiate(e)} cursor="pointer"/>
       <FolderPlus onClick={(e) => handleFolderCreateInitiate(e)} cursor="pointer"/>
       {

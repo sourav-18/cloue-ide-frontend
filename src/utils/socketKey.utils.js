@@ -3,7 +3,8 @@ const socketKeys = {
         pong: "pong",
         initialDirPath: "on:dir:initial-path",
         fileContent: "on:file:content",
-        dirBaseFile: "on:dir:base-file"
+        dirBaseFile: "on:dir:base-file",
+        terminalData: "on:terminal:data"
     },
     emit: {
         ping: "ping",
@@ -13,6 +14,8 @@ const socketKeys = {
         fileContentSync: "file:content-sync",
         newFileCreate: "file:new-create",
         newDirCreate: "dir:new-create",
+        terminalWrite: "terminal:write",
+        terminalRequest: "terminal:request",
     }
 }
 
