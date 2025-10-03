@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import '@xterm/xterm/css/xterm.css';
 import socketKey from "../utils/socketKey.utils";
 import { AllState } from '../context/Context';
+import { FitAddon } from "@xterm/addon-fit";
 
 function TerminalManager() {
   const terminalRef = useRef();
@@ -25,9 +26,13 @@ function TerminalManager() {
 
     const term = new Terminal({
       rows: 20,
+
     });
 
+    const fitAddon = new FitAddon();
+    term.loadAddon(fitAddon);
     term.open(terminalRef.current);
+    fitAddon.fit(); 
 
 
 
@@ -38,7 +43,7 @@ function TerminalManager() {
   }, [socket])
 
   return (
-    <div ref={terminalRef} id="terminal" />
+    <div ref={terminalRef} id="terminal" style={{ height: "100%"}}/>
   )
 }
 

@@ -16,7 +16,7 @@ function FileView({ item, socket }) {
 
   let fileColorStyle = {}
   if (selectedFile == item.path || selectedDir == item.path) {
-    fileColorStyle = { background: "yellow", color: "black" }
+    fileColorStyle = { background: "#4e6072ff", color: "#ffffff" }
   }
 
   let style = {
@@ -94,9 +94,9 @@ function FileView({ item, socket }) {
 
 
   return (
-    <div style={{ marginLeft: 2, padding: 3 }}>
+    <div style={{ marginLeft: 1, padding: 3 }}>
       <div onClick={(e) => handleFileOpen({ event: e, item: item })} style={style.file}>
-        {item.type == "file" ? <FileIcon /> : dirOpen ? <DirOpenIcon/> : <DirCloseIcon/>}
+        {item.type == "file" ? <FileIcon fileName={item.name} /> : dirOpen ? <DirOpenIcon/> : <DirCloseIcon/>}
         <div>{item.name}</div>
       </div>
       {dirOpen &&

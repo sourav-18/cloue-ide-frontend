@@ -6,46 +6,15 @@ import TerminalManager from "./TerminalManager";
 function CodeSpace() {
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
-      {/* Sidebar (FileTree) */}
-      <div
-        style={{
-          width: "250px", // fixed default width
-          minWidth: "200px",
-          maxWidth: "400px",
-          borderRight: "1px solid #333",
-          background: "#1e1e1e",
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <div style={{width:"15vw",height:"100vh",backgroundColor: "#181818", color: "white", borderRight:"1px solid blue"}}>
         <FileTree />
       </div>
-
-      {/* Main area */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          background: "#252526",
-        }}
-      >
-        {/* Code editor (takes remaining height above terminal) */}
-        <div style={{ flex: 1, overflow: "hidden" }}>
-          <CodeEditor />
+      <div style={{display:"flex",flexDirection:"column",width:"85vw"}}>
+        <div>
+        <CodeEditor height={"60vh"}/>
         </div>
-
-        {/* Terminal at bottom */}
-        <div
-          style={{
-            height: "30%",
-            minHeight: "150px",
-            borderTop: "1px solid #333",
-            background: "#1e1e1e",
-          }}
-        >
-          <TerminalManager />
+        <div style={{borderTop:"1px solid blue" ,padding:"4px", backgroundColor: "black", height: "40vh"}}>
+        <TerminalManager />
         </div>
       </div>
     </div>
