@@ -8,7 +8,8 @@ function Context({children}){
         selectedDir:null,
         socket:null,
         fileCreateDirPath:null,
-        folderCreateDirPath:null
+        folderCreateDirPath:null,
+        isInitialFileLoadComplete:false
     })
     return(
         <allState.Provider value={{state,dispatch}}>

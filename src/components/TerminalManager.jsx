@@ -6,12 +6,16 @@ import { AllState } from '../context/Context';
 import { FitAddon } from "@xterm/addon-fit";
 
 function TerminalManager() {
+
   const terminalRef = useRef();
   const [terminalInfo, setTerminalInfo] = useState(null);
-  const { state: { socket } } = AllState();
+  const { state: { socket, isInitialFileLoadComplete } } = AllState();
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket || !isInitialFileLoadComplete) return;
+    const term = new Terminal({
+      rows: 20,
+    });
 
     socket.emit(socketKey.emit.terminalRequest, {}, (response) => {
       if (response.statusCode === 200 && response.data) {
@@ -24,15 +28,10 @@ function TerminalManager() {
       }
     })
 
-    const term = new Terminal({
-      rows: 20,
-
-    });
-
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon);
     term.open(terminalRef.current);
-    fitAddon.fit(); 
+    fitAddon.fit();
 
 
 
@@ -40,10 +39,10 @@ function TerminalManager() {
       term.write(data.data)
     })
 
-  }, [socket])
+  }, [socket, isInitialFileLoadComplete])
 
   return (
-    <div ref={terminalRef} id="terminal" style={{ height: "100%"}}/>
+    <div ref={terminalRef} id="terminal" style={{ height: "100%" }} />
   )
 }
 

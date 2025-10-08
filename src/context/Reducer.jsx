@@ -11,6 +11,8 @@ export default function Reducer(state,action){
             return{...state,fileCreateDirPath:action.payload.fileCreateDirPath}
         case constantData.reducerActionType.folderCreateDirPath:
             return{...state,folderCreateDirPath:action.payload.folderCreateDirPath}
+        case constantData.reducerActionType.isInitialFileLoadComplete:
+            return{...state,isInitialFileLoadComplete:action.payload.isInitialFileLoadComplete}
         default:
             return state;
     }

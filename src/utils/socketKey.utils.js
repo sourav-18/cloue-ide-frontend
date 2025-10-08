@@ -4,7 +4,8 @@ const socketKeys = {
         initialDirPath: "on:dir:initial-path",
         fileContent: "on:file:content",
         dirBaseFile: "on:dir:base-file",
-        terminalData: "on:terminal:data"
+        terminalData: "on:terminal:data",
+        initialFileLoadComplete: "on:file:initial-load-complete"
     },
     emit: {
         ping: "ping",

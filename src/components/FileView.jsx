@@ -81,7 +81,6 @@ function FileView({ item, socket }) {
     e.stopPropagation();
     if (e.key === 'Enter') {
       socket?.emit(socketKey.emit.newDirCreate, { dirPath: item.path, dirName: e.target.value }, (response) => {
-        console.log(response)
         if (response.statusCode === 200 && response.data) {
           setFiles([...files, response.data])
         }
