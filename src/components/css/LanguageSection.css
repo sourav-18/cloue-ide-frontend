@@ -1,0 +1,34 @@
+/* Languages Section */
+.languages {
+    padding: 100px 0;
+    background-color: var(--bg-primary);
+}
+
+.languages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.language-card {
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s;
+    border: 1px solid var(--border-color);
+}
+
+.language-card:hover {
+    transform: translateY(-5px);
+}
+
+.language-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.language-card h3 {
+    font-size: 18px;
+}

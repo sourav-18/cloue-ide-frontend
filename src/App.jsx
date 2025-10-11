@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import CodeSpace from "./components/CodeSpace";
-import { socketInit } from "./general/socket.general.js";
-import constantData from "./utils/constant.utils.js";
-import { AllState } from "./context/Context.jsx";
-import socketKey from "./utils/socketKey.utils.js";
+import React from "react";
 import './App.css';
+import HomePage from "./components/pages/HomePage.jsx";
+import { BrowserRouter, Route, Routes } from "react-router";
+import CodeInit from "./components/CodeInit.jsx";
+import DashboardPage from "./components/pages/DashboardPage.jsx";
+import AuthPage from "./components/pages/AuthPage.jsx";
 const App = () => {
-  const { dispatch } = AllState();
-  useEffect(() => {
-    let socket = socketInit();
-    dispatch({ type: constantData.reducerActionType.socketSet, payload: { socket: socket } });
-  }, []);
-  return <CodeSpace />;
+  return <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/auth" element={<AuthPage />} />
+      <Route path="/code" element={<CodeInit />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+    </Routes>
+  </BrowserRouter>;
 };
 
 export default App;
