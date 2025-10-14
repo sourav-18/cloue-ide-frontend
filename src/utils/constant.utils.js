@@ -7,6 +7,7 @@ const constantData = {
         fileCreateDirPath:"file-create-dir-path",
         folderCreateDirPath:"folder-create-dir-path",
         isInitialFileLoadComplete:"initial-file-load-complete",
+        notification:"notification",
     },
 }
 

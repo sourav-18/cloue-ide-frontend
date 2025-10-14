@@ -13,6 +13,8 @@ export default function Reducer(state,action){
             return{...state,folderCreateDirPath:action.payload.folderCreateDirPath}
         case constantData.reducerActionType.isInitialFileLoadComplete:
             return{...state,isInitialFileLoadComplete:action.payload.isInitialFileLoadComplete}
+        case constantData.reducerActionType.notification:
+            return{...state,notification:action.payload.notification}
         default:
             return state;
     }

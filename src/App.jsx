@@ -5,8 +5,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import CodeInit from "./components/CodeInit.jsx";
 import DashboardPage from "./components/pages/DashboardPage.jsx";
 import AuthPage from "./components/pages/AuthPage.jsx";
+import Notification from "./components/Notification.jsx";
 const App = () => {
   return <BrowserRouter>
+      <Notification/>
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/auth" element={<AuthPage />} />

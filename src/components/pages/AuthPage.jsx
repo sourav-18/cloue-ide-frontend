@@ -1,29 +1,18 @@
 import React, { useState } from 'react';
 import '../css/Auth.css';
+import Notification from '../Notification';
+import { AllState } from '../../context/Context';
+import constantData from '../../utils/constant.utils';
 
 const AuthPage = () => {
+    const { state, dispatch } = AllState();
     const [formData, setFormData] = useState({
         email: '',
-        password: '',
-        rememberMe: false
+        password: ''
     });
 
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Sign in data:', formData);
-        alert('Sign in successful!');
-    };
-
     const handleGoogleLogin = () => {
-        alert('Redirecting to Google authentication...');
+        dispatch({ type: constantData.reducerActionType.notification, payload: { notification: { message: "this is message", type: "error" } } });
     };
 
     const handleGitHubLogin = () => {
@@ -31,6 +20,7 @@ const AuthPage = () => {
     };
 
     return (
+
         <div className="auth-page">
             {/* Background Elements */}
             <div className="bg-gradient"></div>
@@ -47,7 +37,7 @@ const AuthPage = () => {
                     <div className="brand-content">
                         <div className="logo2">
                             <div className="logo2-icon">
-                                <i className="fas fa-code" style={{color:"white"}}></i>
+                                <i className="fas fa-code" style={{ color: "white" }}></i>
                             </div>
                             <span className="logo2-text">CloudIDE</span>
                         </div>
