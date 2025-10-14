@@ -1,24 +1,26 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import Reducer from "./Reducer";
-const allState=createContext();
+const allState = createContext();
 
-function Context({children}){
-    const [state,dispatch]=useReducer(Reducer,{
-        selectedFile:null,
-        selectedDir:null,
-        socket:null,
-        fileCreateDirPath:null,
-        folderCreateDirPath:null,
-        isInitialFileLoadComplete:false,
-        notification:null
+function Context({ children }) {
+    const [state, dispatch] = useReducer(Reducer, {
+        selectedFile: null,
+        selectedDir: null,
+        socket: null,
+        fileCreateDirPath: null,
+        folderCreateDirPath: null,
+        isInitialFileLoadComplete: false,
+        notification: null,
+        userProfile: null,
+        token: null,
     })
-    return(
-        <allState.Provider value={{state,dispatch}}>
+    return (
+        <allState.Provider value={{ state, dispatch }}>
             {children}
         </allState.Provider>
     )
 }
 export default Context;
-export const AllState=()=>{
+export const AllState = () => {
     return useContext(allState)
 }

@@ -3,21 +3,51 @@ import '../css/Auth.css';
 import Notification from '../Notification';
 import { AllState } from '../../context/Context';
 import constantData from '../../utils/constant.utils';
+import { autoLoginRequest, loginRequest } from '../../services/auth.service';
+import { useNavigate } from 'react-router';
 
 const AuthPage = () => {
+    const navigation = useNavigate();
     const { state, dispatch } = AllState();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
-    const handleGoogleLogin = () => {
-        dispatch({ type: constantData.reducerActionType.notification, payload: { notification: { message: "this is message", type: "error" } } });
+    const handleGoogleLogin = async () => {
+        const apiRes = await loginRequest({
+            authProviderId: "123",
+            authProviderType: "google"
+        })
+        if (apiRes.statusCode === 500) {
+            dispatch({ type: constantData.reducerActionType.notification, payload: { notification: { message: apiRes.message, type: apiRes.status } } });
+        } else {
+            autoLogin(apiRes.data.id, apiRes.data.password);
+        }
     };
 
-    const handleGitHubLogin = () => {
-        alert('Redirecting to GitHub authentication...');
+    const handleGitHubLogin = async () => {
+        const apiRes = await loginRequest({
+            authProviderId: "123",
+            authProviderType: "github"
+        })
+        if (apiRes.statusCode === 500) {
+            dispatch({ type: constantData.reducerActionType.notification, payload: { notification: { message: apiRes.message, type: apiRes.status } } });
+        } else {
+            autoLogin(apiRes.data.id, apiRes.data.password);
+        }
     };
+
+    const autoLogin = async (id, password) => {
+        let apiRes = await autoLoginRequest({ id: id, password: password })
+        if (apiRes.statusCode === 200) {
+            localStorage.setItem('token', apiRes.data.token)
+            dispatch({ type: constantData.reducerActionType.token, payload: { token: apiRes.data.token } });
+            // -----------------------------------------------
+            apiRes = { message: "login successfully", status: 'success' };
+            navigation("/");
+        }
+        dispatch({ type: constantData.reducerActionType.notification, payload: { notification: { message: apiRes.message, type: apiRes.status } } });
+    }
 
     return (
 

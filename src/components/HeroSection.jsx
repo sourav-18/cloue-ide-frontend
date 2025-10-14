@@ -89,7 +89,7 @@ const CodeLine = ({ type, content, keywords, indent }) => {
       const regex = new RegExp(`\\b${keyword}\\b`, 'g');
       processedContent = processedContent.replace(
         regex, 
-        `<span class="code-keyword">${keyword}</span>`
+        `<span className="code-keyword">${keyword}</span>`
       );
     });
 

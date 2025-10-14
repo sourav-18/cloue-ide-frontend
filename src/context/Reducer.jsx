@@ -15,6 +15,10 @@ export default function Reducer(state,action){
             return{...state,isInitialFileLoadComplete:action.payload.isInitialFileLoadComplete}
         case constantData.reducerActionType.notification:
             return{...state,notification:action.payload.notification}
+        case constantData.reducerActionType.userProfile:
+            return{...state,userProfile:action.payload.userProfile}
+        case constantData.reducerActionType.token:
+            return{...state,token:action.payload.token}
         default:
             return state;
     }
