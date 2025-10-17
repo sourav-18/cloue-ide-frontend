@@ -1,64 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './css/Dashboard.css';
+import { projectListRequest } from '../services/project.service';
+import { Link } from 'react-router';
 
 const Dashboard = () => {
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: 'Express API Server',
-      language: 'nodejs',
-      lastModified: '2 hours ago',
-      icon: 'fab fa-node-js'
-    },
-    {
-      id: 2,
-      name: 'Data Analysis Tool',
-      language: 'python',
-      lastModified: '1 day ago',
-      icon: 'fab fa-python'
-    },
-    {
-      id: 3,
-      name: 'React Todo App',
-      language: 'javascript',
-      lastModified: '3 days ago',
-      icon: 'fab fa-js-square'
-    },
-    {
-      id: 4,
-      name: 'Portfolio Website',
-      language: 'html',
-      lastModified: '1 week ago',
-      icon: 'fas fa-file-code'
-    },
-    {
-      id: 5,
-      name: 'E-commerce Backend',
-      language: 'nodejs',
-      lastModified: '2 weeks ago',
-      icon: 'fab fa-node-js'
-    },
-    {
-      id: 6,
-      name: 'Machine Learning Model',
-      language: 'python',
-      lastModified: '3 weeks ago',
-      icon: 'fab fa-python'
+
+  useEffect(() => {
+    handleProjectList()
+  }, [])
+  const iconsMap = { nodejs: 'fab fa-node-js', python: 'fab fa-python', react: 'fab fa-js-square', html: 'fas fa-file-code' };
+
+  const [projects, setProjects] = useState([]);
+
+  const handleProjectList = async () => {
+    const projectRes = await projectListRequest()
+    if (projectRes.statusCode === 200) {
+      projectRes.data.forEach((item) => {
+        item.icon = iconsMap[item.language]
+        item.lastModified = item.updatedAt
+      })
+      setProjects(projectRes.data)
     }
-  ]);
-
+  }
   const [activeNav, setActiveNav] = useState('dashboard');
-
-  const handleCreateProject = () => {
-    const newProject = {
-      id: projects.length + 1,
-      name: `New Project ${projects.length + 1}`,
-      language: 'javascript',
-      lastModified: 'Just now',
-      icon: 'fas fa-code'
-    };
-    setProjects([newProject, ...projects]);
-  };
 
   const handleDeleteProject = (projectId) => {
     if (window.confirm('Are you sure you want to delete this project?')) {
@@ -74,8 +38,8 @@ const Dashboard = () => {
   const handleRenameProject = (projectId) => {
     const newName = prompt('Enter new project name:');
     if (newName && newName.trim()) {
-      setProjects(projects.map(project => 
-        project.id === projectId 
+      setProjects(projects.map(project =>
+        project.id === projectId
           ? { ...project, name: newName.trim() }
           : project
       ));
@@ -87,9 +51,8 @@ const Dashboard = () => {
       <DashboardHeader />
       <div className="dashboard-content">
         <Sidebar activeNav={activeNav} setActiveNav={setActiveNav} />
-        <MainContent 
+        <MainContent
           projects={projects}
-          onCreateProject={handleCreateProject}
           onOpenProject={handleOpenProject}
           onRenameProject={handleRenameProject}
           onDeleteProject={handleDeleteProject}
@@ -133,8 +96,8 @@ const Sidebar = ({ activeNav, setActiveNav }) => {
       <ul className="sidebar-nav">
         {navItems.map(item => (
           <li key={item.id}>
-            <a 
-              href="#" 
+            <a
+              href="#"
               className={activeNav === item.id ? 'active' : ''}
               onClick={(e) => {
                 e.preventDefault();
@@ -165,30 +128,32 @@ const Sidebar = ({ activeNav, setActiveNav }) => {
 };
 
 // Main Content Component
-const MainContent = ({ projects, onCreateProject, onOpenProject, onRenameProject, onDeleteProject }) => {
+const MainContent = ({ projects, onOpenProject, onRenameProject, onDeleteProject }) => {
   return (
     <div className="main-content">
       <div className="content-header">
         <h1>Your Projects</h1>
-        <button className="btn btn-primary" onClick={onCreateProject}>
-          <i className="fas fa-plus"></i> Create New Project
-        </button>
+        <Link to='/new-project'>
+          <button className="btn btn-primary">
+            <i className="fas fa-plus"></i> Create New Project
+          </button>
+        </Link>
       </div>
-      
+
       <div className="projects-grid">
         {projects.length === 0 ? (
           <div className="empty-state">
             <i className="fas fa-folder-open"></i>
             <h3>No projects yet</h3>
             <p>Create your first project to get started</p>
-            <button className="btn btn-primary" onClick={onCreateProject}>
+            <button className="btn btn-primary" >
               Create Project
             </button>
           </div>
         ) : (
           projects.map(project => (
-            <ProjectCard 
-              key={project.id}
+            <ProjectCard
+              key={project._id}
               project={project}
               onOpen={onOpenProject}
               onRename={onRenameProject}
@@ -243,21 +208,21 @@ const ProjectCard = ({ project, onOpen, onRename, onDelete }) => {
   return (
     <div className="project-card">
       <div className="project-header">
-        <div 
+        <div
           className="project-icon"
           style={{ color: getLanguageColor(project.language) }}
         >
           <i className={project.icon}></i>
         </div>
         <div className="project-actions">
-          <button 
+          <button
             className="btn-icon"
             onClick={() => onRename(project.id)}
             title="Rename project"
           >
             <i className="fas fa-edit"></i>
           </button>
-          <button 
+          <button
             className="btn-icon"
             onClick={() => onDelete(project.id)}
             title="Delete project"
@@ -272,12 +237,13 @@ const ProjectCard = ({ project, onOpen, onRename, onDelete }) => {
         Last edited {project.lastModified}
       </div>
       <div className="project-actions-main">
-        <button 
-          className="btn btn-primary btn-sm"
-          onClick={() => onOpen(project.id)}
-        >
-          <i className="fas fa-folder-open"></i> Open
-        </button>
+        <Link to={`/code?repelId=${project._id}`}>
+          <button
+            className="btn btn-primary btn-sm"
+          >
+            <i className="fas fa-folder-open"></i> Open
+          </button>
+        </Link>
         <button className="btn btn-secondary btn-sm">
           <i className="fas fa-share"></i> Share
         </button>

@@ -10,6 +10,7 @@ import { profileRequest } from "./services/user.service.js";
 import { AllState } from './context/Context';
 import constantData from "./utils/constant.utils.js";
 import Popup from "./components/Popup.component.jsx";
+import CreateProjectPage from "./components/pages/CreateProjectPage.jsx";
 
 const App = () => {
   const { state: { token }, dispatch } = AllState();
@@ -24,6 +25,8 @@ const App = () => {
       }).catch((data) => {
         console.log(data)
       })
+    } else {
+      dispatch({ type: constantData.reducerActionType.userProfile, payload: { userProfile: null } });
     }
   }, [token])
 
@@ -35,6 +38,7 @@ const App = () => {
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/code" element={<CodeInit />} />
       <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/new-project" element={<CreateProjectPage />} />
     </Routes>
   </BrowserRouter>;
 };
