@@ -20,7 +20,7 @@ function CodeInit() {
     async function handleSocketInit() {
         const socketUrlRes = await projectSocketUrlRequest(replId);
         if (socketUrlRes.statusCode === 200) {
-            let socket = socketInit();
+            let socket = socketInit(socketUrlRes.data);
             dispatch({ type: constantData.reducerActionType.socketSet, payload: { socket: socket } });
         }
 
